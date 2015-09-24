@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React.js Playground</title>
+    <script src="react.min.js"></script>
+    <script src="JSXTransformer.js"></script>
+  </head>
+  <body>
+    <div id="greeting-1"></div>
+    <div id="greeting-2"></div>
+    <div id="greeting-3"></div>
+
+    <div id="box-1"></div>
+    <div id="box-2"></div>
+
+    <div id="container"></div>
+
+    <div id="circles-container"></div>
+
+    <script type="text/jsx">
+      var HelloWorld = React.createClass({
+        render: function() {
+          var styles = {color: "red", fontSize: "19px"};
+          return  <div style={styles}>
+                    <div>Hello World</div>
+                    <br />
+                    <div>Hello CodeCore</div>
+                    <br />
+                    <div>Hello {this.props.name}</div>
+                  </div>;
+        }
+      });
+
+      var Box = React.createClass({
+        render: function() {
+          var content = "Hello World";
+          var styles = {width: this.props.width, height: this.props.height,
+                        backgroundColor: this.props.backgroundColor};
+          return <div style={styles}>
+                </div>;
+        }
+      });
+
+      var Container = React.createClass({
+        render: function(){
+          var styles = {width: "200px", height: "200px", backgroundColor: "red"};
+          var boxColors = ["red", "yellow", "brown", "blue", "pink", "purple"];
+          var boxes     = boxColors.map(function(color){
+                            return <Box width="20px"
+                                        height="20px"
+                                        backgroundColor={color} />
+                          });
+
+          return <div style={styles}>
+                    {boxes}
+                  </div>
+        }
+      });
+
+
+      var CirclesContainer = React.createClass({
+        render: function(){
+          var styles  = {backgroundColor: "red", width: "300px", height: "300px"}
+          var circleComponents = this.props.circles.map(function(circleInfo){
+                         return <Circle diameter={circleInfo.diameter}
+                                       backgroundColor={circleInfo.color} />
+                      });
+          return <div style= {styles}>
+                    {circleComponents}
+                </div>
+        }
+      });
+
+      var Circle = React.createClass({
+        render: function(){
+          var styles = {width: this.props.diameter, height: this.props.diameter,
+                        backgroundColor: this.props.backgroundColor,
+                        float: "left",
+                        borderRadius: "50%"
+                      }
+          return <div style={styles}></div>;
+        }
+      });
+
+      React.render(<CirclesContainer circles={[{color: "pink", diameter: "30px"},
+                                               {color: "purple", diameter: "30px"},
+                                               {color: "blue", diameter: "30px"},
+                                               {color: "green", diameter: "30px"}]} />,
+                    document.getElementById('circles-container'));
+
+      // React.render(<HelloWorld name="Tam" />, document.getElementById("greeting-1"));
+      // React.render(<HelloWorld name="Brian" />, document.getElementById("greeting-2"));
+      // React.render(<HelloWorld name="Ali" />, document.getElementById("greeting-3"));
+
+      // React.render(<Box height="40px" width="40px" backgroundColor="pink" />,
+      //               document.getElementById("box-1"));
+      // React.render(<Box height="60px" width="60px" backgroundColor="purple" />,
+      //               document.getElementById("box-2"));
+
+      // React.render(<Container />, document.getElementById("container"));
+
+    </script>
+
+  </body>
+</html>
