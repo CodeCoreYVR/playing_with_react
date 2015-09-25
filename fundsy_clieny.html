@@ -28,7 +28,8 @@
            var spinnerStyleDisplay = this.state.showSpinner ? "block" : "none";
            var spinnerStyle        = {display: spinnerStyleDisplay};
            var campaigns           = this.state.campaigns.map(function(campaign){
-                                        return <Campaign title={campaign.title} />;
+                                        return <Campaign title={campaign.title}
+                                                         id={campaign.id} />;
                                       });
            return <div>
                     <h1>Welcome To Fundy.sy</h1>
@@ -39,9 +40,23 @@
        });
 
        var Campaign = React.createClass({
+         fetchDetails: function(){
+           var url = "http://localhost:3000/campaigns/" + this.props.id + ".json";
+           $.ajax({
+             method: "GET",
+             url: url,
+             success: function(data){
+               console.log(data);
+             }
+           })
+         },
          render: function() {
            return <div>
-                    <h2>{this.props.title}</h2>
+                    <h2>
+                      <a href="javascript:void(0);" onClick={this.fetchDetails}>
+                        {this.props.title}
+                      </a>
+                    </h2>
                     <hr />
                   </div>
          }
