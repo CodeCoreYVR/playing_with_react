@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React.js Products Demo</title>
+    <script src="react.js"></script>
+    <script src="JSXTransformer.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="text/jsx">
+      var Cart = React.createClass({
+        getInitialState: function() {
+          return {totalPrice: 0};
+        },
+        updateTotalPrice: function(price) {
+          var newTotalPrice = this.state.totalPrice + price;
+          this.setState({totalPrice: newTotalPrice});
+        },
+        render: function() {
+          var styles = {width: "300px", height: "300px"};
+          var productDetails = this.props.products.map(function(detail){
+                                  return <Product name={detail.name}
+                                                  updateTotalPrice={this.updateTotalPrice}
+                                                  price={detail.price} />
+                               }.bind(this));
+          return <div style={styles}>
+                    price: {this.state.totalPrice}
+                    {productDetails}
+                 </div>;
+        }
+      });
+      var Product = React.createClass({
+        getInitialState: function() {
+          return {backgroundColor: this.props.backgroundColor}
+        },
+        changeColor: function() {
+          if(this.state.backgroundColor === this.props.backgroundColor) {
+            this.setState({backgroundColor: "green"});
+            this.props.updateTotalPrice(this.props.price);
+          } else {
+            this.setState({backgroundColor: this.props.backgroundColor})
+            this.props.updateTotalPrice(-this.props.price);
+          }
+        },
+        render: function() {
+          var styles = {width: "150px", height: "50px",
+                          backgroundColor: this.state.backgroundColor}
+          return <div style={styles} onClick={this.changeColor}>
+                   {this.props.name} ${this.props.price}
+                 </div>
+        }
+      });
+
+      React.render(<Cart products={[{name: "Phone", price: 100, color: "white"}, {name: "TV", price: 300, color: "white"} , {name: "ipad", price: 400, color: "white"}, {name: "Mac", price: 1000, color: "white"}]} />, document.getElementById("container"));
+    </script>
+
+  </body>
+</html>
